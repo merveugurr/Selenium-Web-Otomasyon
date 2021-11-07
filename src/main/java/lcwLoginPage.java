@@ -7,7 +7,7 @@ public class lcwLoginPage extends BasePage {
     public lcwLoginPage(WebDriver driver) {
         super(driver);
     }
-    
+
     private final By email=By.id("LoginEmail");
     private final By password=By.id("Password");
 

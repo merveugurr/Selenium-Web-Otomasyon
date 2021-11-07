@@ -78,8 +78,27 @@ public class TestScenario {
 
     @Test
     @Order(1)
+    public void initialize_home_page(){
+        lcwHomePage = new lcwHomePage(driver);
+        lcwProductDetailPage = new lcwProductDetailsPage(driver);
+        lcwProductsPage = new lcwProductListPage(driver);
+        lcwcartPage = new lcwCartPage(driver);
+        Assertions.assertTrue(lcwHomePage.isHomePage(),
+                "Home page not initialized");
+    }
+
+    @Test
+    @Order(2)
+    public void login_to_site(){
+        homePage.loginToTheSite();
+        Assertions.assertTrue(homePage.isloginToSite(),
+                "Login failed");
+    }
+
+    @Test
+    @Order(3)
     //@Disabled("")
-    public void search_a_product()
+    public void searchAProduct()
     {
        /* homePage = new HomePage(driver);
         productsPage = new ProductsPage(driver);*/
@@ -89,8 +108,8 @@ public class TestScenario {
     }
 
     @Test
-    @Order(2)
-    public void select_a_product()
+    @Order(4)
+    public void selectAProduct()
     {
        // productDetailPage = new ProductDetailPage(driver);
         lcwProductPage.selectProduct(1);
@@ -100,23 +119,37 @@ public class TestScenario {
 
 
     @Test
-    @Order(3)
-    public void add_product_to_cart()
+    @Order(5)
+    public void addProductToCart()
     {
         lcwProductDetailPage.addToCart();
-        Assertions.assertTrue(lcwHomePage.isProductCountUp(), "Product count did not increase");
+        lcwProductDetailPage.goToCart();
+        Assertions.assertTrue(lcwProductDetailPage.isAllpriceSame(),
+                "The prices on the product page and in the cart are not same PagePrice: " + lcwProductDetailPage.parameters.priceFromPage + " - CartPrice: " + productDetailPage.parameters.priceFromCart);
+
+       // Assertions.assertTrue(lcwHomePage.isProductCountUp(), "Product count did not increase");
 
     }
 
     @Test
-    @Order(4)
-    public void go_to_cart()
+    @Order(6)
+    public void goToCart()
     {
-        lcwCartPage = new lcwCartPage();
+        lcwCartPage.increaseQuantity();
+        Assertions.assertTrue(lcwCartPage.isOrderQuantityIncreased(),
+                "Order quantity could not increased. quantity :"+ lcwCartPage.new_quantity);
+       /* lcwCartPage = new lcwCartPage();
         lcwHomePage.goToCart();
         Assertions.assertTrue(lcwCartPage.checkIfProductAdded(), "Product was not added to cart");
-
+        */
     }
+
+    @Test
+    @Order(7)
+    public void remoteOrders(){
+        lcwCartPage.removeOrder();
+        Assertions.assertTrue(lcwCartPage.checkCartIsEmpty(),
+                "Cart is not empty");}
 
 
 }

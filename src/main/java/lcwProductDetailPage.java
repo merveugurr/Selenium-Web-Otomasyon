@@ -16,4 +16,10 @@ public class lcwProductDetailPage extends BasePage {
     public void addToCart() {
         click(addToCartButtonLocator);
     }
+
+    public void goToCart() {
+    }
+
+    public boolean isAllpriceSame() {
+    }
 }
