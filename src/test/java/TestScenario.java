@@ -1,36 +1,41 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Order;
+
+import org.openqa.selenium.By;
+
 
 public class TestScenario {
 
-    private lcwHomePage lcwHomePage;
-    private lcwLoginPage lcwLoginPage;
-    private lcwProductPage lcwProductPage;
-    private lcwSearchPage lcwSearchPage;
-    private lcwProductDetailPage lcwProductDetailPage;
-    private lcwCartPage lcwCartPage;
+    Pages.lcwHomePage lcwHomePage;
+    Pages.lcwLoginPage lcwLoginPage;
+    Pages.lcwProductPage lcwProductPage;
+    Pages.lcwSearchPage lcwSearchPage;
+    Pages.lcwProductDetailPage lcwProductDetailPage;
+    Pages.lcwCartPage lcwCartPage;
+    public By productPriceFromPage = By.xpath("//div[@class='col-xs-12 price-area']/div/div/span[@class='price']");
 
 /*
     @Test
     @Order(1)
     //@Disabled("")
     public void openBrowser() {
-        lcwHomePage.navigateToUrl();
+        Pages.lcwHomePage.navigateToUrl();
     }
 
     @Test
     @Order(1)
     //@Disabled("")
     public void gotoLcwWebPageTest() {
-        lcwHomePage.navigateToUrl();
+        Pages.lcwHomePage.navigateToUrl();
     }
 
     @Test
     public void gotoLoginPage(){
-        lcwHomePage.navigateToUrl();
-        lcwHomePage.kvkkPopupClose();
-        lcwLoginPage.gotoLoginPage();
-        lcwLoginPage.controlLoginPage();
+        Pages.lcwHomePage.navigateToUrl();
+        Pages.lcwHomePage.kvkkPopupClose();
+        Pages.lcwLoginPage.gotoLoginPage();
+        Pages.lcwLoginPage.controlLoginPage();
     }
 
     @Test
@@ -49,25 +54,25 @@ public class TestScenario {
 
     @Test
     public void searchProduct(){
-        lcwHomePage.navigateToUrl();
-        lcwHomePage.kvkkPopupClose();
-        lcwLoginPage.gotoLoginPage();
-        lcwLoginPage.typeUsernameAndPassword();
-        lcwLoginPage.clickLoginBtn();
-        lcwProductPage.searchProduct();
-        lcwProductPage.controlSearchedList();
+        Pages.lcwHomePage.navigateToUrl();
+        Pages.lcwHomePage.kvkkPopupClose();
+        Pages.lcwLoginPage.gotoLoginPage();
+        Pages.lcwLoginPage.typeUsernameAndPassword();
+        Pages.lcwLoginPage.clickLoginBtn();
+        Pages.lcwProductPage.searchProduct();
+        Pages.lcwProductPage.controlSearchedList();
     }
 
     @Test
     public void gotoSecondPageAndControl(){
-        lcwHomePage.navigateToUrl();
-        lcwHomePage.kvkkPopupClose();
-        lcwLoginPage.gotoLoginPage();
-        lcwLoginPage.typeUsernameAndPassword();
-        lcwLoginPage.clickLoginBtn();
-        lcwProductPage.searchProduct();
-        lcwProductPage.controlSearchedList();
-        lcwProductPage.gotoSecondPageAndControl();
+        Pages.lcwHomePage.navigateToUrl();
+        Pages.lcwHomePage.kvkkPopupClose();
+        Pages.lcwLoginPage.gotoLoginPage();
+        Pages.lcwLoginPage.typeUsernameAndPassword();
+        Pages.lcwLoginPage.clickLoginBtn();
+        Pages.lcwProductPage.searchProduct();
+        Pages.lcwProductPage.controlSearchedList();
+        Pages.lcwProductPage.gotoSecondPageAndControl();
     }
 
     @After
@@ -78,20 +83,20 @@ public class TestScenario {
 
     @Test
     @Order(1)
-    public void initialize_home_page(){
-        lcwHomePage = new lcwHomePage(driver);
-        lcwProductDetailPage = new lcwProductDetailsPage(driver);
-        lcwProductsPage = new lcwProductListPage(driver);
-        lcwcartPage = new lcwCartPage(driver);
-        Assertions.assertTrue(lcwHomePage.isHomePage(),
-                "Home page not initialized");
+    public void initializeHomePage(){
+       /* Pages.lcwHomePage = new Pages.lcwHomePage(driver);
+        lcwProductDetailPage = new lcwProductDetailPage(driver);
+        Pages.lcwProductPage = new Pages.lcwProductPage(driver);
+        Pages.lcwCartPage = new Pages.lcwCartPage(driver);
+        Assertions.assertTrue(Pages.lcwHomePage.isHomePage(),
+                "Home page not initialized");*/
     }
 
     @Test
     @Order(2)
-    public void login_to_site(){
-        homePage.loginToTheSite();
-        Assertions.assertTrue(homePage.isloginToSite(),
+    public void loginToSite(){
+        lcwHomePage.loginToTheSite();
+        Assertions.assertTrue(lcwHomePage.isloginToSite(),
                 "Login failed");
     }
 
@@ -100,10 +105,10 @@ public class TestScenario {
     //@Disabled("")
     public void searchAProduct()
     {
-       /* homePage = new HomePage(driver);
-        productsPage = new ProductsPage(driver);*/
-        lcwHomePage.searchBox().search("pantolon");
-        Assertions.assertTrue(lcwProductPage.isOnProductPage() ,
+        lcwHomePage.ScrollDown();
+        lcwProductPage.moreProductClick();
+        lcwProductPage.selectProduct();
+        Assertions.assertTrue(lcwProductDetailPage.isOnProductDetailPage() ,
                 "Not on products page!");
     }
 
@@ -112,7 +117,7 @@ public class TestScenario {
     public void selectAProduct()
     {
        // productDetailPage = new ProductDetailPage(driver);
-        lcwProductPage.selectProduct(1);
+        lcwProductPage.selectProduct();
         Assertions.assertTrue(lcwProductDetailPage.isOnProductDetailPage(), "Not on Product Detail Page");
 
     }
@@ -125,11 +130,12 @@ public class TestScenario {
         lcwProductDetailPage.addToCart();
         lcwProductDetailPage.goToCart();
         Assertions.assertTrue(lcwProductDetailPage.isAllpriceSame(),
-                "The prices on the product page and in the cart are not same PagePrice: " + lcwProductDetailPage.parameters.priceFromPage + " - CartPrice: " + productDetailPage.parameters.priceFromCart);
+                "The prices on the product page and in the cart are not same PagePrice: " + lcwProductDetailPage.priceFromPage + " - CartPrice: " + lcwProductDetailPage.priceFromCart);
 
-       // Assertions.assertTrue(lcwHomePage.isProductCountUp(), "Product count did not increase");
+       // Assertions.assertTrue(Pages.lcwHomePage.isProductCountUp(), "Product count did not increase");
 
     }
+
 
     @Test
     @Order(6)
@@ -138,10 +144,10 @@ public class TestScenario {
         lcwCartPage.increaseQuantity();
         Assertions.assertTrue(lcwCartPage.isOrderQuantityIncreased(),
                 "Order quantity could not increased. quantity :"+ lcwCartPage.new_quantity);
-       /* lcwCartPage = new lcwCartPage();
-        lcwHomePage.goToCart();
-        Assertions.assertTrue(lcwCartPage.checkIfProductAdded(), "Product was not added to cart");
-        */
+       // Pages.lcwCartPage = new Pages.lcwCartPage();
+       // Pages.lcwHomePage.goToCart();
+        //Assertions.assertTrue(Pages.lcwCartPage.checkIfProductAdded(), "Product was not added to cart");
+
     }
 
     @Test
@@ -149,7 +155,8 @@ public class TestScenario {
     public void remoteOrders(){
         lcwCartPage.removeOrder();
         Assertions.assertTrue(lcwCartPage.checkCartIsEmpty(),
-                "Cart is not empty");}
+                "Cart is not empty");
+    }
 
 
 }
